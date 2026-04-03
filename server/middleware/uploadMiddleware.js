@@ -14,10 +14,9 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary,
   params: async (req, file) => {
-    const isImage = file.mimetype.startsWith('image/');
     return {
       folder: 'healthvault/records',
-      resource_type: isImage ? 'image' : 'raw',
+      resource_type: 'auto',
       allowed_formats: ['jpg', 'jpeg', 'png', 'pdf', 'webp'],
       public_id: `${Date.now()}-${file.originalname.replace(/\s+/g, '_')}`,
     };

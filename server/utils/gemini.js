@@ -4,7 +4,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const classifyRecord = async (text, filename) => {
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const prompt = `You are a medical document classifier. Based on the filename and extracted text below, classify this document into exactly ONE of these categories:
 Prescription, Blood Test, X-Ray, MRI/CT Scan, Vaccination, Allergy Record, Medical Certificate, ECG, Invoice, Other.
 
@@ -25,7 +25,7 @@ Respond with ONLY the category name, nothing else.`;
 
 const summarizeRecord = async (text, category) => {
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const prompt = `You are a helpful medical assistant. Summarize the following ${category} medical document in simple, easy-to-understand language for a patient. 
 Keep it concise (2-4 sentences). Highlight key findings, values, or instructions.
 
@@ -43,7 +43,7 @@ If no text is available, provide a generic helpful message about this type of do
 
 const extractTags = async (text, category) => {
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const prompt = `Extract 3-5 important medical tags/keywords from this ${category} document. 
 Return ONLY a JSON array of strings like: ["tag1", "tag2", "tag3"]
 
@@ -63,7 +63,7 @@ Text: ${text ? text.substring(0, 1000) : 'No text available'}`;
 
 const generateHealthInsight = async (records) => {
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const recordsSummary = records.map(r => `${r.category} on ${new Date(r.recordDate).toLocaleDateString()}: ${r.title}`).join('\n');
 
     const prompt = `You are a patient-friendly health assistant. Based on these medical records, provide a brief health insight summary (3-5 sentences) that helps the patient understand their health journey. Be encouraging and clear.
@@ -83,7 +83,7 @@ Focus on patterns, frequency of visits, and general health trends.`;
 
 const chatWithAssistant = async (question, records) => {
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const context = records.map(r =>
       `[${r.category}] ${r.title} (${new Date(r.recordDate).toLocaleDateString()}) - ${r.aiSummary || r.doctorName || ''}`
     ).join('\n');
@@ -108,7 +108,7 @@ Provide a helpful, concise answer.`;
 
 const checkDrugInteractions = async (medications) => {
   try {
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const prompt = `You are a pharmacist assistant. Check for potential drug interactions or concerns with these medications:
 ${medications.join(', ')}
 
