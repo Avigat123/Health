@@ -423,19 +423,27 @@ HealthVault/
 
 ## ⚙️ Environment Variables & Configuration
 
-The backend requires a configured `.env` file in the [server/](file:///E:/HealthVault/server/) directory. You can copy the provided [server/.env.example](file:///E:/HealthVault/server/.env.example) file:
+### 1. Frontend Configuration (`client/.env`)
+Copy the template from [client/.env.example](file:///E:/HealthVault/client/.env.example):
+```bash
+cp client/.env.example client/.env
+```
 
+| Variable | Example Value | Description |
+|---|---|---|
+| `VITE_API_URL` | `https://healthvault-backend-ydqk.onrender.com` | Base URL of the backend API (use `http://localhost:5000` for local dev). |
+
+### 2. Backend Configuration (`server/.env`)
+Copy the template from [server/.env.example](file:///E:/HealthVault/server/.env.example):
 ```bash
 cp server/.env.example server/.env
 ```
 
-### Variable Breakdown
-
 | Variable | Example Value | Description |
 |---|---|---|
-| `PORT` | `5000` | Port number on which the Express server listens. |
-| `CLIENT_URL` | `http://localhost:5173` | Allowed origin for CORS headers to prevent cross-site request forgery. |
-| `MONGO_URI` | `mongodb+srv://...` | Connection URI for MongoDB Atlas cluster or local database. |
+| `PORT` | `5000` | Port number on which Express listens (Render sets automatically). |
+| `CLIENT_URL` | `https://your-frontend.vercel.app` | Allowed frontend origin(s) for CORS & QR share links (comma-separated if multiple). |
+| `MONGO_URI` | `mongodb+srv://...` | Connection URI for MongoDB Atlas cluster. |
 | `JWT_SECRET` | `your_secret_key` | Cryptographic secret used to sign and verify patient authentication tokens. |
 | `CLOUDINARY_CLOUD_NAME` | `your_cloud_name` | Cloudinary account name where medical files and scans are hosted. |
 | `CLOUDINARY_API_KEY` | `1234567890` | Cloudinary API Key for authenticated file uploads and deletions. |

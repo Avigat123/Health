@@ -21,7 +21,8 @@ export const createShareLink = async (req, res) => {
       doctorNote: doctorNote || '',
     });
 
-    const shareUrl = `${process.env.CLIENT_URL}/share/${share.token}`;
+    const clientBase = (process.env.CLIENT_URL ? process.env.CLIENT_URL.split(',')[0].trim() : 'http://localhost:5173').replace(/\/+$/, '');
+    const shareUrl = `${clientBase}/share/${share.token}`;
 
     // Generate QR code as data URL
     const qrCode = await QRCode.toDataURL(shareUrl, {

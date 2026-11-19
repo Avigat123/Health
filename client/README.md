@@ -51,15 +51,21 @@ client/src/
    npm install
    ```
 
-2. Start the development server:
+2. Configure environment:
+   ```bash
+   cp .env.example .env
+   # Set VITE_API_URL to your Render backend or leave commented out for local dev proxy
+   ```
+
+3. Start the development server:
    ```bash
    npm run dev
    ```
 
    The app will run at `http://localhost:5173`.
-   API requests to `/api/*` are automatically proxied to `http://localhost:5000` via [vite.config.js](file:///E:/HealthVault/client/vite.config.js).
+   API requests to `/api/*` are automatically routed to `VITE_API_URL` (or proxied to `http://localhost:5000` via [vite.config.js](file:///E:/HealthVault/client/vite.config.js) if unset).
 
-3. Build for production:
+4. Build for production:
    ```bash
    npm run build
    ```

@@ -13,8 +13,39 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+// Allowed Origins for CORS (combines local development and deployed frontend URL)
+const localOrigins = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'http://localhost:3000',
+  'http://localhost:4173',
+];
+
+const envOrigins = (process.env.CLIENT_URL || '')
+  .split(',')
+  .map((url) => url.trim().replace(/\/+$/, ''))
+  .filter(Boolean);
+
+const allowedOrigins = [...new Set([...localOrigins, ...envOrigins])];
+
+// CORS Middleware with credentials and strict origin checking
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow non-browser requests (e.g. mobile apps, curl, Postman, health monitors)
+      if (!origin) return callback(null, true);
+      const normalizedOrigin = origin.replace(/\/+$/, '');
+      if (allowedOrigins.includes(normalizedOrigin)) {
+        return callback(null, true);
+      }
+      return callback(null, false);
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
+
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
@@ -30,17 +61,21 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'HealthVault API running ✅', timestamp: new Date() });
 });
 
+// Port and Host binding for Render and local development
+const PORT = process.env.PORT || 5000;
+const HOST = '0.0.0.0';
+
 // MongoDB Connection
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     console.log('✅ MongoDB connected');
-    const server = app.listen(process.env.PORT || 5000, () => {
-      console.log(`🚀 Server running on port ${process.env.PORT || 5000}`);
+    const server = app.listen(PORT, HOST, () => {
+      console.log(`🚀 Server running on port ${PORT} (host: ${HOST})`);
     });
     server.on('error', (err) => {
       if (err.code === 'EADDRINUSE') {
-        console.error(`❌ Port ${process.env.PORT || 5000} is already in use. Kill the old process and retry.`);
+        console.error(`❌ Port ${PORT} is already in use. Kill the old process and retry.`);
         process.exit(1);
       } else {
         throw err;
