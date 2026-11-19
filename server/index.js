@@ -56,6 +56,14 @@ app.use('/api/share', shareRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/doctor', doctorRoutes);
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({
+    message: 'HealthVault API is running!',
+    status: 'OK',
+  });
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'HealthVault API running ✅', timestamp: new Date() });

@@ -526,6 +526,7 @@ Visit **[http://localhost:5173](http://localhost:5173)** to register a patient a
 - `GET /api/ai/timeline` *(Protected)* — Chronological history of medical visits and diagnoses.
 
 ### 🩺 System & Diagnostics
+- `GET /` — Root endpoint returning API running status (`{ message: 'HealthVault API is running!', status: 'OK' }`).
 - `GET /api/health` — Returns API operational status and timestamp.
 - `GET /api/doctor/ping` — Doctor route health check.
 
