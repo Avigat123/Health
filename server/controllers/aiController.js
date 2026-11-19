@@ -1,8 +1,8 @@
-const { generateHealthInsight, chatWithAssistant, checkDrugInteractions } = require('../utils/gemini');
-const Record = require('../models/Record');
+import { generateHealthInsight, chatWithAssistant, checkDrugInteractions } from '../utils/gemini.js';
+import Record from '../models/Record.js';
 
 // GET /api/ai/insight
-const getHealthInsight = async (req, res) => {
+export const getHealthInsight = async (req, res) => {
   try {
     const records = await Record.find({ userId: req.user._id }).sort('-recordDate').limit(20);
     const insight = await generateHealthInsight(records);
@@ -13,7 +13,7 @@ const getHealthInsight = async (req, res) => {
 };
 
 // POST /api/ai/chat
-const chat = async (req, res) => {
+export const chat = async (req, res) => {
   try {
     const { question } = req.body;
     if (!question) return res.status(400).json({ message: 'Question is required' });
@@ -27,7 +27,7 @@ const chat = async (req, res) => {
 };
 
 // POST /api/ai/drug-check
-const drugCheck = async (req, res) => {
+export const drugCheck = async (req, res) => {
   try {
     const { medications } = req.body;
     if (!medications || !medications.length)
@@ -41,7 +41,7 @@ const drugCheck = async (req, res) => {
 };
 
 // GET /api/ai/timeline
-const getTimeline = async (req, res) => {
+export const getTimeline = async (req, res) => {
   try {
     const records = await Record.find({ userId: req.user._id })
       .sort('recordDate')
@@ -51,5 +51,3 @@ const getTimeline = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
-module.exports = { getHealthInsight, chat, drugCheck, getTimeline };

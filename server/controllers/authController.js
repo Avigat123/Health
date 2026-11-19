@@ -1,11 +1,11 @@
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
+import User from '../models/User.js';
+import jwt from 'jsonwebtoken';
 
 const generateToken = (id) =>
   jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
 // POST /api/auth/register
-const register = async (req, res) => {
+export const register = async (req, res) => {
   try {
     const { name, email, password, role } = req.body;
 
@@ -39,7 +39,7 @@ const register = async (req, res) => {
 };
 
 // POST /api/auth/login
-const login = async (req, res) => {
+export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -72,7 +72,7 @@ const login = async (req, res) => {
 };
 
 // GET /api/auth/me
-const getMe = async (req, res) => {
+export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select('-password');
     res.json(user);
@@ -82,7 +82,7 @@ const getMe = async (req, res) => {
 };
 
 // PUT /api/auth/profile
-const updateProfile = async (req, res) => {
+export const updateProfile = async (req, res) => {
   try {
     const { name, phone, dateOfBirth, gender, bloodGroup, allergies, currentMedications, emergencyContacts } = req.body;
 
@@ -97,5 +97,3 @@ const updateProfile = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
-module.exports = { register, login, getMe, updateProfile };

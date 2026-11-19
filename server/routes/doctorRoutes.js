@@ -1,4 +1,5 @@
-const express = require('express');
+import express from 'express';
+
 const router = express.Router();
 
 // Doctor portal - redirect to share access route
@@ -8,4 +9,4 @@ router.get('/ping', (req, res) => {
   res.json({ message: 'Doctor portal route active. Use /api/share/access/:token to view patient records.' });
 });
 
-module.exports = router;
+export default router;

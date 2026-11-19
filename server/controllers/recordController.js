@@ -1,9 +1,9 @@
-const Record = require('../models/Record');
-const { cloudinary } = require('../middleware/uploadMiddleware');
-const { classifyRecord, summarizeRecord, extractTags } = require('../utils/gemini');
+import Record from '../models/Record.js';
+import { cloudinary } from '../middleware/uploadMiddleware.js';
+import { classifyRecord, summarizeRecord, extractTags } from '../utils/gemini.js';
 
 // POST /api/records/upload
-const uploadRecord = async (req, res) => {
+export const uploadRecord = async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
 
@@ -57,7 +57,7 @@ const uploadRecord = async (req, res) => {
 };
 
 // GET /api/records
-const getRecords = async (req, res) => {
+export const getRecords = async (req, res) => {
   try {
     const { category, search, page = 1, limit = 20, sort = '-recordDate' } = req.query;
     const query = { userId: req.user._id };
@@ -86,7 +86,7 @@ const getRecords = async (req, res) => {
 };
 
 // GET /api/records/:id
-const getRecord = async (req, res) => {
+export const getRecord = async (req, res) => {
   try {
     const record = await Record.findOne({ _id: req.params.id, userId: req.user._id });
     if (!record) return res.status(404).json({ message: 'Record not found' });
@@ -97,7 +97,7 @@ const getRecord = async (req, res) => {
 };
 
 // PUT /api/records/:id
-const updateRecord = async (req, res) => {
+export const updateRecord = async (req, res) => {
   try {
     const record = await Record.findOneAndUpdate(
       { _id: req.params.id, userId: req.user._id },
@@ -112,7 +112,7 @@ const updateRecord = async (req, res) => {
 };
 
 // DELETE /api/records/:id
-const deleteRecord = async (req, res) => {
+export const deleteRecord = async (req, res) => {
   try {
     const record = await Record.findOne({ _id: req.params.id, userId: req.user._id });
     if (!record) return res.status(404).json({ message: 'Record not found' });
@@ -136,7 +136,7 @@ const deleteRecord = async (req, res) => {
 };
 
 // GET /api/records/stats
-const getStats = async (req, res) => {
+export const getStats = async (req, res) => {
   try {
     const userId = req.user._id;
     const total = await Record.countDocuments({ userId });
@@ -153,7 +153,7 @@ const getStats = async (req, res) => {
 };
 
 // POST /api/records/:id/regenerate-ai
-const regenerateAI = async (req, res) => {
+export const regenerateAI = async (req, res) => {
   try {
     const record = await Record.findOne({ _id: req.params.id, userId: req.user._id });
     if (!record) return res.status(404).json({ message: 'Record not found' });
@@ -174,5 +174,3 @@ const regenerateAI = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
-module.exports = { uploadRecord, getRecords, getRecord, updateRecord, deleteRecord, getStats, regenerateAI };

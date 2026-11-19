@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { v4: uuidv4 } = require('uuid');
+import mongoose from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 
 const shareLinkSchema = new mongoose.Schema(
   {
@@ -20,4 +20,4 @@ const shareLinkSchema = new mongoose.Schema(
 // Auto-expire
 shareLinkSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
-module.exports = mongoose.model('ShareLink', shareLinkSchema);
+export default mongoose.model('ShareLink', shareLinkSchema);

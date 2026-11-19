@@ -1,11 +1,12 @@
-const express = require('express');
+import express from 'express';
+import { protect } from '../middleware/authMiddleware.js';
+import { getHealthInsight, chat, drugCheck, getTimeline } from '../controllers/aiController.js';
+
 const router = express.Router();
-const { protect } = require('../middleware/authMiddleware');
-const { getHealthInsight, chat, drugCheck, getTimeline } = require('../controllers/aiController');
 
 router.get('/insight', protect, getHealthInsight);
 router.post('/chat', protect, chat);
 router.post('/drug-check', protect, drugCheck);
 router.get('/timeline', protect, getTimeline);
 
-module.exports = router;
+export default router;

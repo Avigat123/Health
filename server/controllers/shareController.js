@@ -1,10 +1,11 @@
-const ShareLink = require('../models/ShareLink');
-const Record = require('../models/Record');
-const QRCode = require('qrcode');
-const { v4: uuidv4 } = require('uuid');
+import ShareLink from '../models/ShareLink.js';
+import Record from '../models/Record.js';
+import User from '../models/User.js';
+import QRCode from 'qrcode';
+import { v4 as uuidv4 } from 'uuid';
 
 // POST /api/share/create
-const createShareLink = async (req, res) => {
+export const createShareLink = async (req, res) => {
   try {
     const { recordIds, shareAll, expiresInHours = 24, maxUses, doctorNote } = req.body;
 
@@ -35,7 +36,7 @@ const createShareLink = async (req, res) => {
 };
 
 // GET /api/share/my-links
-const getMyLinks = async (req, res) => {
+export const getMyLinks = async (req, res) => {
   try {
     const links = await ShareLink.find({ ownerId: req.user._id }).sort('-createdAt');
     res.json(links);
@@ -45,7 +46,7 @@ const getMyLinks = async (req, res) => {
 };
 
 // DELETE /api/share/:id/revoke
-const revokeLink = async (req, res) => {
+export const revokeLink = async (req, res) => {
   try {
     const link = await ShareLink.findOneAndUpdate(
       { _id: req.params.id, ownerId: req.user._id },
@@ -60,7 +61,7 @@ const revokeLink = async (req, res) => {
 };
 
 // GET /api/share/access/:token  (public - doctor accesses this)
-const accessSharedRecords = async (req, res) => {
+export const accessSharedRecords = async (req, res) => {
   try {
     const { token } = req.params;
     const share = await ShareLink.findOne({ token });
@@ -82,7 +83,6 @@ const accessSharedRecords = async (req, res) => {
       records = await Record.find({ _id: { $in: share.recordIds } }).sort('-recordDate');
     }
 
-    const User = require('../models/User');
     const owner = await User.findById(share.ownerId).select('name bloodGroup allergies currentMedications emergencyContacts');
 
     res.json({
@@ -98,5 +98,3 @@ const accessSharedRecords = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
-
-module.exports = { createShareLink, getMyLinks, revokeLink, accessSharedRecords };

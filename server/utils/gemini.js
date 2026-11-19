@@ -1,8 +1,8 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-const classifyRecord = async (text, filename) => {
+export const classifyRecord = async (text, filename) => {
   try {
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const prompt = `You are a medical document classifier. Based on the filename and extracted text below, classify this document into exactly ONE of these categories:
@@ -23,7 +23,7 @@ Respond with ONLY the category name, nothing else.`;
   }
 };
 
-const summarizeRecord = async (text, category) => {
+export const summarizeRecord = async (text, category) => {
   try {
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const prompt = `You are a helpful medical assistant. Summarize the following ${category} medical document in simple, easy-to-understand language for a patient. 
@@ -41,7 +41,7 @@ If no text is available, provide a generic helpful message about this type of do
   }
 };
 
-const extractTags = async (text, category) => {
+export const extractTags = async (text, category) => {
   try {
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const prompt = `Extract 3-5 important medical tags/keywords from this ${category} document. 
@@ -61,7 +61,7 @@ Text: ${text ? text.substring(0, 1000) : 'No text available'}`;
   }
 };
 
-const generateHealthInsight = async (records) => {
+export const generateHealthInsight = async (records) => {
   try {
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const recordsSummary = records.map(r => `${r.category} on ${new Date(r.recordDate).toLocaleDateString()}: ${r.title}`).join('\n');
@@ -81,7 +81,7 @@ Focus on patterns, frequency of visits, and general health trends.`;
   }
 };
 
-const chatWithAssistant = async (question, records) => {
+export const chatWithAssistant = async (question, records) => {
   try {
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const context = records.map(r =>
@@ -106,7 +106,7 @@ Provide a helpful, concise answer.`;
   }
 };
 
-const checkDrugInteractions = async (medications) => {
+export const checkDrugInteractions = async (medications) => {
   try {
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
     const prompt = `You are a pharmacist assistant. Check for potential drug interactions or concerns with these medications:
@@ -121,5 +121,3 @@ Format: Keep it under 100 words and patient-friendly.`;
     return 'Drug interaction check unavailable.';
   }
 };
-
-module.exports = { classifyRecord, summarizeRecord, extractTags, generateHealthInsight, chatWithAssistant, checkDrugInteractions };

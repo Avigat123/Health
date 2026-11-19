@@ -1,7 +1,7 @@
-const cloudinary = require('cloudinary').v2;
-const multer = require('multer');
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const dotenv = require('dotenv');
+import { v2 as cloudinary } from 'cloudinary';
+import multer from 'multer';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -23,7 +23,7 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const upload = multer({
+export const upload = multer({
   storage,
   limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
   fileFilter: (req, file, cb) => {
@@ -36,4 +36,4 @@ const upload = multer({
   },
 });
 
-module.exports = { upload, cloudinary };
+export { cloudinary };

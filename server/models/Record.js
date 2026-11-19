@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const recordSchema = new mongoose.Schema(
   {
@@ -39,4 +39,4 @@ const recordSchema = new mongoose.Schema(
 // Text index for search
 recordSchema.index({ title: 'text', doctorName: 'text', hospitalName: 'text', aiTags: 'text', diagnosis: 'text' });
 
-module.exports = mongoose.model('Record', recordSchema);
+export default mongoose.model('Record', recordSchema);

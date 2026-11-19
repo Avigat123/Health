@@ -1,10 +1,17 @@
-const express = require('express');
+import express from 'express';
+import { protect } from '../middleware/authMiddleware.js';
+import { upload } from '../middleware/uploadMiddleware.js';
+import {
+  uploadRecord,
+  getRecords,
+  getRecord,
+  updateRecord,
+  deleteRecord,
+  getStats,
+  regenerateAI,
+} from '../controllers/recordController.js';
+
 const router = express.Router();
-const { protect } = require('../middleware/authMiddleware');
-const { upload } = require('../middleware/uploadMiddleware');
-const {
-  uploadRecord, getRecords, getRecord, updateRecord, deleteRecord, getStats, regenerateAI,
-} = require('../controllers/recordController');
 
 router.get('/stats', protect, getStats);
 router.post('/upload', protect, upload.single('file'), uploadRecord);
@@ -14,4 +21,4 @@ router.put('/:id', protect, updateRecord);
 router.delete('/:id', protect, deleteRecord);
 router.post('/:id/regenerate-ai', protect, regenerateAI);
 
-module.exports = router;
+export default router;
