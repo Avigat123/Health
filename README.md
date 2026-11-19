@@ -4,8 +4,19 @@
 
 ---
 
+## 🌐 Live Deployments
+
+| Service | Platform | Live URL |
+|---|---|---|
+| 🖥️ **Frontend Web Application** | Render | [https://healthvault-frontend-1u20.onrender.com](https://healthvault-frontend-1u20.onrender.com) |
+| ⚙️ **Backend REST API** | Render | [https://healthvault-backend-ydqk.onrender.com](https://healthvault-backend-ydqk.onrender.com) |
+| 🩺 **API Health Check** | Render | [https://healthvault-backend-ydqk.onrender.com/api/health](https://healthvault-backend-ydqk.onrender.com/api/health) |
+
+---
+
 ## 📑 Table of Contents
-1. [Project Overview & Philosophy](#-project-overview--philosophy)
+1. [Live Deployments](#-live-deployments)
+2. [Project Overview & Philosophy](#-project-overview--philosophy)
 2. [Why Are We Using This Stack? (Technology Decisions)](#-why-are-we-using-this-stack-technology-decisions)
    - [Frontend Architecture](#frontend-architecture)
    - [Backend & Database Architecture](#backend--database-architecture)
@@ -442,7 +453,7 @@ cp server/.env.example server/.env
 | Variable | Example Value | Description |
 |---|---|---|
 | `PORT` | `5000` | Port number on which Express listens (Render sets automatically). |
-| `CLIENT_URL` | `https://your-frontend.vercel.app` | Allowed frontend origin(s) for CORS & QR share links (comma-separated if multiple). |
+| `CLIENT_URL` | `https://healthvault-frontend-1u20.onrender.com` | Allowed frontend origin(s) for CORS & QR share links (comma-separated if multiple). |
 | `MONGO_URI` | `mongodb+srv://...` | Connection URI for MongoDB Atlas cluster. |
 | `JWT_SECRET` | `your_secret_key` | Cryptographic secret used to sign and verify patient authentication tokens. |
 | `CLOUDINARY_CLOUD_NAME` | `your_cloud_name` | Cloudinary account name where medical files and scans are hosted. |
